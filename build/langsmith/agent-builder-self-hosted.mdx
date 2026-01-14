@@ -1,0 +1,66 @@
+---
+title: Configure Agent Builder
+sidebarTitle: Agent Builder
+---
+
+[Agent Builder](/langsmith/agent-builder) allows users to create, deploy, and manage AI agents directly within LangSmith. This page explains how to enable Agent Builder on a self-hosted LangSmith instance.
+
+## Components
+
+Agent Builder consists of four main components:
+
+| Component | Description |
+|-----------|-------------|
+| `agentBootstrap` | Core infrastructure for agent creation and management. |
+| `agentBuilder` | Parent service that coordinates tool and trigger execution. |
+| `toolServer` | Provides MCP tool execution for agents. |
+| `triggerServer` | Handles webhooks and scheduled triggers. |
+
+## Enable Agent Builder
+
+To enable Agent Builder, add the following to your `values.yaml`:
+
+```yaml
+agentBootstrap:
+  enabled: true
+
+agentBuilder:
+  enabled: true
+
+  # REQUIRED: Fernet encryption key for agent builder secrets
+  # Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  encryptionKey: "<your-encryption-key>"
+
+  # Tool Server - provides MCP tool execution
+  toolServer:
+    enabled: true
+
+  # Trigger Server - handles webhooks and scheduled triggers
+  triggerServer:
+    enabled: true
+```
+
+### Generate an encryption key
+
+Agent Builder requires a Fernet encryption key to securely store secrets. Generate one using Python:
+
+```bash
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+```
+
+<Warning>
+Store this key securely. If you lose it, any secrets stored by Agent Builder will be unrecoverable.
+</Warning>
+
+## Enable OAuth tools and triggers (optional)
+
+To enable OAuth-based tools (like Gmail and Slack) and webhook triggers, additional configuration is required.
+
+---
+
+<Callout icon="pen-to-square" iconType="regular">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-builder-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+<Tip icon="terminal" iconType="regular">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Tip>

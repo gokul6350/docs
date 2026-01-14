@@ -1,0 +1,52 @@
+---
+title: Configure Insights
+sidebarTitle: Insights
+---
+
+[Insights](/langsmith/insights) provides AI-powered analysis of your traces and application data within LangSmith. This page explains how to enable Insights on a self-hosted LangSmith instance.
+
+## Components
+
+Insights consists of two main components:
+
+| Component | Description |
+|-----------|-------------|
+| `agentBootstrap` | Core infrastructure for agent creation and management. |
+| `insightsAgent` | AI agent that analyzes traces and generates insights. |
+
+## Enable Insights
+
+To enable Insights, add the following to your `values.yaml`:
+
+```yaml
+agentBootstrap:
+  enabled: true
+
+insightsAgent:
+  enabled: true
+
+  # REQUIRED: Fernet encryption key for insights agent secrets
+  # Generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+  encryptionKey: "<your-encryption-key>"
+```
+
+### Generate an encryption key
+
+Insights requires a Fernet encryption key to securely store secrets. Generate one using Python:
+
+```bash
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+```
+
+<Warning>
+Store this key securely. If you lose it, any secrets stored by Insights will be unrecoverable.
+</Warning>
+
+---
+
+<Callout icon="pen-to-square" iconType="regular">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/insights-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+</Callout>
+<Tip icon="terminal" iconType="regular">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+</Tip>
